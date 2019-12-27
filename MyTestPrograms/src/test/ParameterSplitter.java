@@ -37,7 +37,7 @@ public class ParameterSplitter {
 			ClassNotFoundException {
 
 		File file = new File(
-				"C:/Users/Lenovo/Desktop/p.txt");
+				"C:\\Users\\premendra.kumar\\Desktop\\DUMP/p.txt");
 		/** if file doesnt exists, then create it */
 		if (!file.exists()) {
 			file.createNewFile();
