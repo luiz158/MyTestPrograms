@@ -8,10 +8,10 @@ public class Test {
 		String[] data = {
 				"2617453,1,604206,82638451970289,44139,75,1950,1,1000000011731383,25,5151,1,590123,08756,,2,6001,1260962707,1,,111111111111100,P,08756,NIFTY, ,OPTIDX,1261180800,1220000,CE,,,,,,,,",
 				"5|6|7||8|9||" };
-		// Utility.splitData(data[0], ",");
-		Utility.splitData(data[1], "\\|");
+		 Utility.splitData(data[0], ",");
+//		Utility.splitData(data[1], "\\|");
 		System.out.println("============================================");
-		// Utility.splitDataWithStringTokenizer(data[0]);
+		 Utility.splitDataWithStringTokenizer(data[0]);
 	}
 
 }
@@ -30,9 +30,19 @@ class Utility {
 		}
 	}
 
+	/**
+	 * StringTokenizer has a constructor which takes 3 arguments which the third is
+	 * a boolean that controls if the delimiters are to be returned as tokens or
+	 * not. You should set it to true.
+	 * 
+	 * <pre>
+	 * new StringTokenizer(yourString, yourDelimiters, true);
+	 * </pre>
+	 */
 	static void splitDataWithStringTokenizer(String data) {
 		StringTokenizer stt = null;
-		stt = new StringTokenizer(data, ",");
+		
+		stt = new StringTokenizer(data, ",",true);
 
 		System.out.println("t.length() : " + stt.countTokens());
 
