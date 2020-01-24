@@ -21,71 +21,105 @@ public class Test {
 
 		// scanLibForAllJars("D:\\Prem\\EclipseWS\\uidd_UAT_Code\\IVLAUA\\WebContent\\WEB-INF\\lib");
 		try {
-			String clearText = "Pass@123";// "Indiabulls@555";
-			String resp = encode(clearText);
+			
+			String authorization="MjBGNEM5ODQ0MDkyM0NGN0FENkIxNDlGNkMyMjIzQUM3NTNBQUE5NjRDMDhDN0IxNkExQjFGRURGM0FGMDg4Ng==1111";
+			
+			String clearText = "Ibulls@1111";// "Indiabulls@555";
+			String resp = Encoder.encode(clearText);
 			System.out.println("clearText :\t\t" + clearText);
 			System.out.println("resp :\t\t" + resp);
+			
+			if(authorization==null || (!resp.equals(authorization))) {
+				System.out.println("not matching");
+			}else{
+				System.out.println("matching");
+			}
 		} catch (NoSuchAlgorithmException e) {
 			e.printStackTrace();
 		}
 	}
-
-	public static String encode(final String clearText) throws NoSuchAlgorithmException {
-		String finalString = getBase64(getSha256(getSha1(clearText)));
-		return finalString;
-	}
-
-	private static String getBase64(String str) {
-		String b64 = new String(Base64.getEncoder().encode(str.getBytes(StandardCharsets.UTF_8)));
-		return b64;
-	}
-
-	private static synchronized String getSha256(String value) throws NoSuchAlgorithmException {
-
-		MessageDigest md = MessageDigest.getInstance("SHA-256");
-		md.update(value.getBytes());
-		return bytesToHex(md.digest());
-
-	}
-
-	private static String bytesToHex(byte[] digest) {
-		String hexStr = "";
-		for (byte b : digest) {
-			String st = String.format("%02X", b);
-			// System.out.print(st);
-			hexStr += st;
+	
+	private static class  Decoder{
+		public static String decode(String clearText) throws NoSuchAlgorithmException {
+			return clearText;
 		}
-		return hexStr;
+		
+		private static String decodeBase64(String str) {
+			
+			Base64.Decoder decoder = Base64.getDecoder();
+			String dStr = new String(decoder.decode(str));  
+			
+			return dStr;
+		}
+		
+		private static String decodeSHA256(String str) {
+			return null;
+		}
+		
+		private static String decodeSHA1(String str) {
+			return null;
+		}
 	}
 
-	private static String getSha1(String input) throws NoSuchAlgorithmException {
-
-		/* getInstance() method is called with algorithm SHA-1 */
-		MessageDigest md = MessageDigest.getInstance("SHA-1");
-
-		/*
-		 * digest() method is called
-		 * 
-		 * to calculate message digest of the input string
-		 * 
-		 * returned as array of byte
-		 */
-		byte[] messageDigest = md.digest(input.getBytes());
-
-		/* Convert byte array into signum representation */
-		BigInteger no = new BigInteger(1, messageDigest);
-
-		/* Convert message digest into hex value */
-		String hashtext = no.toString(16);
-
-		/* Add preceding 0s to make it 32 bit */
-		while (hashtext.length() < 32) {
-			hashtext = "0" + hashtext;
+	private static class Encoder{
+		
+		public static String encode(String clearText) throws NoSuchAlgorithmException {
+			String finalString = getBase64(getSha256(getSha1(clearText)));
+			return finalString;
 		}
 
-		/* return the HashText */
-		return hashtext;
+		private static String getBase64(String str) {
+			String b64 = new String(Base64.getEncoder().encode(str.getBytes(StandardCharsets.UTF_8)));
+			return b64;
+		}
 
+		private static synchronized String getSha256(String value) throws NoSuchAlgorithmException {
+
+			MessageDigest md = MessageDigest.getInstance("SHA-256");
+			md.update(value.getBytes());
+			return bytesToHex(md.digest());
+
+		}
+
+		private static String bytesToHex(byte[] digest) {
+			String hexStr = "";
+			for (byte b : digest) {
+				String st = String.format("%02X", b);
+				// System.out.print(st);
+				hexStr += st;
+			}
+			return hexStr;
+		}
+
+		private static String getSha1(String input) throws NoSuchAlgorithmException {
+
+			/* getInstance() method is called with algorithm SHA-1 */
+			MessageDigest md = MessageDigest.getInstance("SHA-1");
+
+			/*
+			 * digest() method is called
+			 * 
+			 * to calculate message digest of the input string
+			 * 
+			 * returned as array of byte
+			 */
+			byte[] messageDigest = md.digest(input.getBytes());
+
+			/* Convert byte array into signum representation */
+			BigInteger no = new BigInteger(1, messageDigest);
+
+			/* Convert message digest into hex value */
+			String hashtext = no.toString(16);
+
+			/* Add preceding 0s to make it 32 bit */
+			while (hashtext.length() < 32) {
+				hashtext = "0" + hashtext;
+			}
+
+			/* return the HashText */
+			return hashtext;
+
+		}
 	}
 
 	private static void scanLibForAllJars(String libLocation) {
